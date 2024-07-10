@@ -2,11 +2,28 @@
 import { ref } from 'vue'
 
 const b = ref<number>(0)
+const contentRef = ref<HTMLDivElement | null>(null)
+// const print = createPrint({
+//   content: () => contentRef.value,
+//   onPrintSuccess: () => console.log('print success'),
+//   onPrintError: err => console.error('print error', err),
+// })
 </script>
 
 <template>
-  <div>{{ b }}</div>
-  <button @click="b++">
-    add
-  </button>
+  <div>
+    <div ref="contentRef">
+      <div>{{ b }}</div>
+      <button @click="b++">
+        add
+      </button>
+    </div>
+    <VueToPrint :content="() => contentRef">
+      <PrintContextConsumer v-slot="{ handlePrint }">
+        <button @click="handlePrint">
+          Print this out!
+        </button>
+      </PrintContextConsumer>
+    </VueToPrint>
+  </div>
 </template>

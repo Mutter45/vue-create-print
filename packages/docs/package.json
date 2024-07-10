@@ -1,6 +1,6 @@
 {
   "name": "@vue-to-print/docs",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -9,9 +9,13 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
-    "preview": "vitepress preview"
+    "preview": "vitepress preview",
+    "release": "release-it"
   },
   "devDependencies": {
     "vitepress": "^1.2.3"
+  },
+  "release-it": {
+    "git": false
   }
 }

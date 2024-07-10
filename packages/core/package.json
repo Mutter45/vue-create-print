@@ -1,0 +1,16 @@
+{
+  "name": "vue-to-print",
+  "version": "0.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": ["print"],
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=development vite build",
+    "release": "release-it"
+  },
+  "release-it": {
+    "git": false
+  }
+}
