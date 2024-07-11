@@ -18,7 +18,7 @@ const props = [
   'trigger',
   'show',
 ] as const
-export const VueToPrint = defineComponent({
+export const VueCreatePrint = defineComponent({
   name: 'VueToPrint',
   props: props as unknown as any,
   setup(props, { slots }) {

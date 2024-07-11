@@ -30,7 +30,7 @@ export default defineConfig({
     sourcemap: false,
     lib: {
       entry: resolve(__dirname, './index.ts'),
-      name: 'vueToPrint',
+      name: 'vueCreatePrint',
       fileName: 'index',
       formats: ['es', 'umd', 'cjs', 'iife'],
     },

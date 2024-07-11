@@ -1,6 +1,6 @@
 {
-  "name": "vue-to-print",
-  "version": "0.0.1",
+  "name": "vue-create-print-monorepo",
+  "version": "0.0.2",
   "packageManager": "pnpm@9.3.0",
   "description": "",
   "author": "",
@@ -15,12 +15,12 @@
   ],
   "scripts": {
     "dev": "run-p build:core dev:play",
-    "dev:play": "pnpm --filter @vue-to-print/play dev",
-    "dev:core": " pnpm --filter @vue-to-print/core dev",
-    "docs:dev": "pnpm --filter @vue-to-print/docs dev",
+    "dev:play": "pnpm --filter @vue-create-print/play dev",
+    "dev:core": " pnpm --filter @vue-create-print/core dev",
+    "docs:dev": "pnpm --filter @vue-create-print/docs dev",
     "build": "run-s build:core build:docs",
-    "build:core": "pnpm --filter @vue-to-print/core build",
-    "build:docs": "pnpm --filter @vue-to-print/docs build",
+    "build:core": "pnpm --filter @vue-create-print/core build",
+    "build:docs": "pnpm --filter @vue-create-print/docs build",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
@@ -28,8 +28,8 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@vue-to-print/core": "workspace:*",
-    "vue": "^3.4.31"
+    "vue": "^3.4.31",
+    "vue-create-print": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "2.22.0-beta.3",

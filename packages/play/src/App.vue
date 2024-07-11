@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PrintContextConsumer, VueToPrint } from '@vue-to-print/core'
+import { PrintContextConsumer, VueCreatePrint } from 'vue-create-print'
 import { ref } from 'vue'
 
 const b = ref<number>(0)
@@ -19,7 +19,7 @@ const contentRef = ref<HTMLDivElement | null>(null)
         add
       </button>
     </div>
-    <VueToPrint :content="() => contentRef">
+    <VueCreatePrint :content="() => contentRef">
       <!-- <template #content>
         <div>
           <h1>21312312</h1>
@@ -30,6 +30,6 @@ const contentRef = ref<HTMLDivElement | null>(null)
           Print this out!
         </button>
       </PrintContextConsumer>
-    </VueToPrint>
+    </VueCreatePrint>
   </div>
 </template>

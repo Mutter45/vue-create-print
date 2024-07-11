@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@vue-to-print/core':
-        specifier: workspace:*
-        version: link:packages/core
       vue:
         specifier: ^3.4.31
         version: 3.4.31(typescript@5.5.3)
+      vue-create-print:
+        specifier: workspace:*
+        version: link:packages/core
     devDependencies:
       '@antfu/eslint-config':
         specifier: 2.22.0-beta.3
