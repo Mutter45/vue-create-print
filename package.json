@@ -1,6 +1,6 @@
 {
-  "name": "@vue-to-print/workspace",
-  "version": "0.0.0",
+  "name": "vue-to-print",
+  "version": "0.0.1",
   "packageManager": "pnpm@9.3.0",
   "description": "",
   "author": "",
@@ -14,9 +14,13 @@
     "packages/docs"
   ],
   "scripts": {
-    "dev": "pnpm --filter @vue-to-print/play dev",
+    "dev": "run-p build:core dev:play",
+    "dev:play": "pnpm --filter @vue-to-print/play dev",
+    "dev:core": " pnpm --filter @vue-to-print/core dev",
     "docs:dev": "pnpm --filter @vue-to-print/docs dev",
-    "build": " pnpm --filter vue-to-print build",
+    "build": "run-s build:core build:docs",
+    "build:core": "pnpm --filter @vue-to-print/core build",
+    "build:docs": "pnpm --filter @vue-to-print/docs build",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
@@ -24,13 +28,15 @@
     "release": "release-it"
   },
   "dependencies": {
+    "@vue-to-print/core": "workspace:*",
     "vue": "^3.4.31"
   },
   "devDependencies": {
     "@antfu/eslint-config": "2.22.0-beta.3",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@release-it/bumper": "^6.0.1",
     "@tsconfig/node18": "^18.2.4",
     "@types/node": "^18.19.39",
     "@vitejs/plugin-vue": "^5.0.5",
@@ -43,8 +49,6 @@
     "install": "^0.13.0",
     "lint-staged": "^15.2.7",
     "npm-run-all": "^4.1.5",
-    "release-it": "^17.4.1",
-    "release-it-pnpm": "^4.6.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.3",
@@ -55,10 +59,5 @@
     "*.{js,ts,tsx,vue,md}": [
       "eslint --cache --fix"
     ]
-  },
-  "release-it": {
-    "git": {
-      "requireCleanWorkingDir": false
-    }
   }
 }

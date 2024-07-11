@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PrintContextConsumer, VueToPrint } from '@vue-to-print/core'
 import { ref } from 'vue'
 
 const b = ref<number>(0)
@@ -19,6 +20,11 @@ const contentRef = ref<HTMLDivElement | null>(null)
       </button>
     </div>
     <VueToPrint :content="() => contentRef">
+      <!-- <template #content>
+        <div>
+          <h1>21312312</h1>
+        </div>
+      </template> -->
       <PrintContextConsumer v-slot="{ handlePrint }">
         <button @click="handlePrint">
           Print this out!

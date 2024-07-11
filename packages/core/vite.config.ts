@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 import vue from '@vitejs/plugin-vue'
-// import dts from 'vite-plugin-dts'
+import dts from 'vite-plugin-dts'
 
 // const TRY_MOVE_STYLES_DELAY = 750 as const
 // console.log(process.env.NODE_ENV)
@@ -14,23 +14,23 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [
     vue(),
-    visualizer({
-      filename: 'dist/stats.es.html',
+    // visualizer({
+    //   filename: 'dist/stats.html',
+    // }),
+
+    dts({
+      tsconfigPath: './tsconfig.json',
     }),
-    // {
-    //   // tsconfigPath: '../../tsconfig.build.json',
-    //   outDir: 'dist/types',
-    // }
-    // dts(),
   ],
+
   build: {
-    outDir: 'dist/es',
+    outDir: 'dist',
     minify: false,
     cssCodeSplit: true,
-    sourcemap: true,
+    sourcemap: false,
     lib: {
       entry: resolve(__dirname, './index.ts'),
-      name: 'vue-to-print',
+      name: 'vueToPrint',
       fileName: 'index',
       formats: ['es', 'umd', 'cjs', 'iife'],
     },

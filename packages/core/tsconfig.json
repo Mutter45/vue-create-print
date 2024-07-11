@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    /* Linting */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true,
+    "removeComments": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["*.config.ts", "dist", "node_modules"]
+}

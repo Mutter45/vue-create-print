@@ -1,16 +1,40 @@
 {
-  "name": "vue-to-print",
-  "version": "0.0.0",
-  "description": "",
-  "author": "",
+  "name": "@vue-to-print/core",
+  "version": "0.0.1",
+  "description": "web print for vue2.x and vue3.x",
+  "author": "Mutter45 <mutter45@foxmail.com>",
   "license": "ISC",
-  "keywords": ["print"],
-  "main": "index.js",
-  "scripts": {
-    "build": "cross-env NODE_ENV=development vite build",
-    "release": "release-it"
+  "homepage": "https://github.com/Mutter45/vue-to-print",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mutter45/vue-to-print.git"
   },
-  "release-it": {
-    "git": false
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "print",
+    "vue",
+    "vue-to-print"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.umd.js"
+    }
+  },
+  "main": "index.js",
+  "unpkg": "./dist/index.iife.js",
+  "jsdelivr": "./dist/index.iife.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development vite build --watch",
+    "build": "cross-env NODE_ENV=production vite build"
   }
 }
