@@ -1,7 +1,7 @@
 {
   "name": "@vue-create-print/play",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,8 @@
     "release": "release-it"
   },
   "release-it": {
-    "git": false
+    "git": false,
+    "github": false,
+    "npm": false
   }
-
 }

@@ -1,6 +1,6 @@
 {
   "name": "@vue-create-print/docs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -16,6 +16,8 @@
     "vitepress": "^1.2.3"
   },
   "release-it": {
-    "git": false
+    "git": false,
+    "github": false,
+    "npm": false
   }
 }
