@@ -1,6 +1,6 @@
 {
   "name": "vue-create-print-monorepo",
-  "version": "0.0.3",
+  "version": "0.0.4-beta.1",
   "packageManager": "pnpm@9.3.0",
   "description": "",
   "author": "",
