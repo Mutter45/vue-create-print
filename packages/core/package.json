@@ -39,7 +39,10 @@
     "release": "release-it"
   },
   "release-it": {
-    "git": false
+    "git": false,
+    "npm": {
+      "publish": true
+    }
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {

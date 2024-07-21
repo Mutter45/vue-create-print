@@ -1,9 +1,16 @@
 {
   "plugins": {
     "release-it-pnpm": {
-      "workspaces": ["packages/*"],
-      "inFile": "CHANGELOG.md"
+      "inFile": "CHANGELOG.md",
+      "packages": {
+        "@vue-create-print/play": {},
+        "@vue-create-print/docs": {},
+        "vue-create-print": {}
+      }
     }
+  },
+  "npm": {
+    "publish": false
   },
   "git": {
     "commitMessage": "chore: release ${version}"

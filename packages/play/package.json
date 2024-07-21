@@ -12,6 +12,8 @@
   "release-it": {
     "git": false,
     "github": false,
-    "npm": false
+    "npm": {
+      "publish": false
+    }
   }
 }
