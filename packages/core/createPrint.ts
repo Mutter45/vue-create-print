@@ -1,7 +1,10 @@
-import { toValue } from 'vue'
+/* eslint-disable no-console */
+import { toValue } from 'vue-demi'
+import { delay, isFunction, isString, merge } from 'lodash-es'
+import { debugWarn, throwError } from './utils/log'
+import { defaultProps } from './constant'
+import { isPromise, loadImgNode, loadVideoNode } from './utils'
 import type { FontOption, PrintProp } from './types/index'
-import { isFunction, isString } from './utils/index'
-import { debugWarn } from './utils/log'
 
 export function createPrint(
   props: PrintProp,
@@ -10,29 +13,36 @@ export function createPrint(
     bodyClass,
     content,
     copyStyles,
+    documentTitle,
     fonts,
-    pageStyle,
     nonce,
+    onAfterPrint,
+    onBeforeGetContent,
     onBeforePrint,
     onPrintError,
-    onAfterPrint,
+    pageStyle,
     print,
-    documentTitle,
     suppressErrors,
     removeAfterPrint,
-  } = props
+  }
+  = merge({}, props, defaultProps)
   const getContent = () => {
     if (!isFunction(content)) {
-      debugWarn('vue-to-print', 'The "content" prop must be a function.')
+      debugWarn('vue-create-print', 'The "content" prop must be a function.')
     }
     const _el = toValue(content())
     if (!_el) {
-      debugWarn('vue-to-print', 'Please ensure "content" is renderable before allowing "react-to-print" to be called.')
+      throwError('vue-create-print', 'Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
     }
     if (isString(_el)) {
-      return document.querySelector(_el) ?? new Text(_el)
+      const _selectEl = document.querySelector(_el)
+      if (!_selectEl) {
+        throwError('vue-create-print', 'Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
+      }
+      return _selectEl as HTMLElement
     }
-    return _el
+
+    return _el as HTMLElement
   }
   const handleRemoveIframe = (force?: boolean) => {
     if (force || removeAfterPrint) {
@@ -52,13 +62,13 @@ export function createPrint(
         console.warn(messages)
       }
       else if (level === 'debug') {
-        console.debug(messages) // eslint-disable-line no-console
+        console.debug(messages)
       }
     }
   }
   const startPrint = (target: HTMLIFrameElement) => {
     // Some browsers such as Safari don't always behave well without this timeout
-    setTimeout(() => {
+    delay(() => {
       if (target.contentWindow) {
         target.contentWindow.focus() // Needed for IE 11
 
@@ -116,23 +126,17 @@ export function createPrint(
         }
       }
       else {
-        logMessages(['Printing failed because the `contentWindow` of the print iframe did not load. This is possibly an error with `react-to-print`. Please file an issue: https://github.com/MatthewHerbst/react-to-print/issues/'])
+        logMessages(['Printing failed because the `contentWindow` of the print iframe did not load. This is possibly an error with `vue-create-print`.'])
       }
     }, 500)
   }
   const triggerPrint = (target: HTMLIFrameElement) => {
     if (onBeforePrint) {
       const onBeforePrintOutput = onBeforePrint()
-      if (onBeforePrintOutput && typeof onBeforePrintOutput.then === 'function') {
+      if (isPromise(onBeforePrintOutput)) {
         onBeforePrintOutput
-          .then(() => {
-            startPrint(target)
-          })
-          .catch((error: Error) => {
-            if (onPrintError) {
-              onPrintError('onBeforePrint', error)
-            }
-          })
+          .then(() => startPrint(target))
+          .catch((error: Error) => onPrintError?.('onBeforePrint', error))
       }
       else {
         startPrint(target)
@@ -143,7 +147,7 @@ export function createPrint(
     }
   }
   const handlePrint = () => {
-    const contentEl = getContent() as (HTMLElement | Text)
+    const contentEl = getContent()
 
     const printWindow = document.createElement('iframe')
     printWindow.width = `${document.documentElement.clientWidth}px`
@@ -155,25 +159,21 @@ export function createPrint(
     // Ensure we set a DOCTYPE on the iframe's document
     printWindow.srcdoc = '<!DOCTYPE html>'
 
-    // React components can return a bare string as a valid JSX response
     const clonedContentNodes = contentEl.cloneNode(true)
-    const isText = clonedContentNodes instanceof Text
 
     const globalLinkNodes = document.querySelectorAll('link[rel~=\'stylesheet\'], link[as=\'style\']')
-    const renderComponentImgNodes = isText ? [] : (clonedContentNodes as Element).querySelectorAll('img')
-    const renderComponentVideoNodes = isText ? [] : (clonedContentNodes as Element).querySelectorAll('video')
-    /** 需要加载的数据统计 */
-    let numResourcesToLoad = 0
-    const numFonts = fonts ? fonts.length : 0
+    const renderComponentImgNodes = (clonedContentNodes as Element).querySelectorAll('img')
+    const renderComponentVideoNodes = (clonedContentNodes as Element).querySelectorAll('video')
 
-    numResourcesToLoad
+    const numFonts = fonts ? fonts.length : 0
+    const numResourcesToLoad
         = globalLinkNodes.length
         + renderComponentImgNodes.length
         + renderComponentVideoNodes.length
         + numFonts
-    /** 加载成功资源统计 */
+
     const resourcesLoaded: (Element | FontOption | FontFace)[] = []
-    /** 加载失败资源统计 */
+
     const resourcesErrored: (Element | FontOption | FontFace)[] = []
 
     const markLoaded = (resource: Element | FontOption | FontFace, errorMessages?: unknown[]) => {
@@ -187,7 +187,7 @@ export function createPrint(
       }
       else {
         logMessages([
-          '"react-to-print" was unable to load a resource but will continue attempting to print the page',
+          '"vue-create-print" was unable to load a resource but will continue attempting to print the page',
           ...errorMessages,
         ])
         resourcesErrored.push(resource)
@@ -222,9 +222,7 @@ export function createPrint(
               )
               printWindow.contentDocument!.fonts.add(fontFace)
               fontFace.loaded
-                .then(() => {
-                  markLoaded(fontFace)
-                })
+                .then(() => markLoaded(fontFace))
                 .catch((error: Error) => {
                   markLoaded(fontFace, ['Failed loading the font:', fontFace, 'Load error:', error])
                 })
@@ -232,14 +230,14 @@ export function createPrint(
           }
           else {
             fonts.forEach(font => markLoaded(font)) // Pretend we loaded the fonts to allow printing to continue
-            logMessages(['"react-to-print" is not able to load custom fonts because the browser does not support the FontFace API but will continue attempting to print the page'])
+            logMessages(['"vue-create-print" is not able to load custom fonts because the browser does not support the FontFace API but will continue attempting to print the page'])
           }
         }
 
-        const defaultPageStyle = typeof pageStyle === 'function' ? pageStyle() : pageStyle
+        const defaultPageStyle = isFunction(pageStyle) ? pageStyle() : pageStyle
 
-        if (typeof defaultPageStyle !== 'string') {
-          logMessages([`"react-to-print" expected a "string" from \`pageStyle\` but received "${typeof defaultPageStyle}". Styles from \`pageStyle\` will not be applied.`])
+        if (!isString(defaultPageStyle)) {
+          logMessages([`"vue-create-print" expected a "string" from \`pageStyle\` but received "${typeof defaultPageStyle}". Styles from \`pageStyle\` will not be applied.`])
         }
         else {
           const styleEl = domDoc.createElement('style')
@@ -255,96 +253,67 @@ export function createPrint(
           domDoc.body.classList.add(...bodyClass.split(' '))
         }
 
-        if (!isText) {
-          // Copy canvases
-          // NOTE: must use data from `contentNodes` here as the canvass elements in
-          // `clonedContentNodes` will not have been redrawn properly yet
-          const srcCanvasEls = (contentEl as HTMLElement).querySelectorAll('canvas')
-          const targetCanvasEls = domDoc.querySelectorAll('canvas')
+        // Copy canvases
+        // NOTE: must use data from `contentEl` here as the canvass elements in
+        // `clonedContentNodes` will not have been redrawn properly yet
+        const srcCanvasEls = contentEl.querySelectorAll('canvas')
+        const targetCanvasEls = domDoc.querySelectorAll('canvas')
 
-          for (let i = 0; i < srcCanvasEls.length; ++i) {
-            const sourceCanvas = srcCanvasEls[i]
+        for (let i = 0; i < srcCanvasEls.length; ++i) {
+          const sourceCanvas = srcCanvasEls[i]
 
-            const targetCanvas = targetCanvasEls[i]
-            const targetCanvasContext = targetCanvas.getContext('2d')
+          const targetCanvas = targetCanvasEls[i]
+          const targetCanvasContext = targetCanvas.getContext('2d')
 
-            if (targetCanvasContext) {
-              targetCanvasContext.drawImage(sourceCanvas, 0, 0)
-            }
+          if (targetCanvasContext) {
+            targetCanvasContext.drawImage(sourceCanvas, 0, 0)
           }
+        }
 
-          // Pre-load images
-          for (let i = 0; i < renderComponentImgNodes.length; i++) {
-            const imgNode = renderComponentImgNodes[i]
-            const imgSrc = imgNode.getAttribute('src')
+        // Pre-load images
+        for (let i = 0; i < renderComponentImgNodes.length; i++) {
+          const imgNode = renderComponentImgNodes[i]
+          // https://stackoverflow.com/questions/10240110/how-do-you-cache-an-image-in-javascript
+          loadImgNode(imgNode)
+            .then(() => markLoaded(imgNode))
+            .catch((error: Error) => {
+              markLoaded(imgNode, ['Failed loading the img:', imgNode, 'Load error:', error])
+            })
+        }
 
-            if (!imgSrc) {
-              markLoaded(imgNode, ['Found an <img> tag with an empty "src" attribute. This prevents pre-loading it. The <img> is:', imgNode])
-            }
-            else {
-              // https://stackoverflow.com/questions/10240110/how-do-you-cache-an-image-in-javascript
-              const img = new Image()
-              img.onload = () => markLoaded(imgNode)
-              img.onerror = (_event, _source, _lineno, _colno, error) => markLoaded(imgNode, ['Error loading <img>', imgNode, 'Error', error])
-              img.src = imgSrc
-            }
-          }
+        // Pre-load videos
+        for (let i = 0; i < renderComponentVideoNodes.length; i++) {
+          const videoNode = renderComponentVideoNodes[i]
+          loadVideoNode(videoNode)
+            .then(() => markLoaded(videoNode))
+            .catch((error: Error) => {
+              markLoaded(videoNode, ['Failed loading the video:', videoNode, 'Load error:', error])
+            })
+        }
+        // Copy input values
+        // This covers most input types, though some need additional work (further down)
+        const inputSelector = 'input'
+        const originalInputs = contentEl.querySelectorAll(inputSelector)
+        const copiedInputs = domDoc.querySelectorAll(inputSelector)
+        for (let i = 0; i < originalInputs.length; i++) {
+          copiedInputs[i].value = originalInputs[i].value
+        }
 
-          // Pre-load videos
-          for (let i = 0; i < renderComponentVideoNodes.length; i++) {
-            const videoNode = renderComponentVideoNodes[i]
-            videoNode.preload = 'auto' // Hint to the browser that it should load this resource
-
-            const videoPoster = videoNode.getAttribute('poster')
-            if (videoPoster) {
-              // If the video has a poster, pre-load the poster image
-              // https://stackoverflow.com/questions/10240110/how-do-you-cache-an-image-in-javascript
-              const img = new Image()
-              img.onload = () => markLoaded(videoNode)
-              img.onerror = (_event, _source, _lineno, _colno, error) => markLoaded(videoNode, ['Error loading video poster', videoPoster, 'for video', videoNode, 'Error:', error])
-              img.src = videoPoster
-            }
-            else {
-              if (videoNode.readyState >= 2) { // Check if the video has already loaded a frame
-                markLoaded(videoNode)
-              }
-              else {
-                videoNode.onloadeddata = () => markLoaded(videoNode)
-
-                // TODO: why do `onabort` and `onstalled` seem to fire all the time even if there is no issue?
-                // videoNode.onabort = () => markLoaded(videoNode, ["Loading video aborted", videoNode]);
-                videoNode.onerror = (_event, _source, _lineno, _colno, error) => markLoaded(videoNode, ['Error loading video', videoNode, 'Error', error])
-                // videoNode.onemptied = () => markLoaded(videoNode, ["Loading video emptied, skipping", videoNode]);
-                videoNode.onstalled = () => markLoaded(videoNode, ['Loading video stalled, skipping', videoNode])
-              }
-            }
-          }
-
-          // Copy input values
-          // This covers most input types, though some need additional work (further down)
-          const inputSelector = 'input'
-          const originalInputs = (contentEl as HTMLElement).querySelectorAll(inputSelector)
-          const copiedInputs = domDoc.querySelectorAll(inputSelector)
-          for (let i = 0; i < originalInputs.length; i++) {
-            copiedInputs[i].value = originalInputs[i].value
-          }
-
-          // Copy checkbox, radio checks
-          const checkedSelector = 'input[type=checkbox],input[type=radio]'
-          const originalCRs = (contentEl as HTMLElement).querySelectorAll(checkedSelector)
-          const copiedCRs = domDoc.querySelectorAll(checkedSelector)
-          for (let i = 0; i < originalCRs.length; i++) {
-            (copiedCRs[i] as HTMLInputElement).checked
+        // Copy checkbox, radio checks
+        const checkedSelector = 'input[type=checkbox],input[type=radio]'
+        const originalCRs = contentEl.querySelectorAll(checkedSelector)
+        const copiedCRs = domDoc.querySelectorAll(checkedSelector)
+        for (let i = 0; i < originalCRs.length; i++) {
+          (copiedCRs[i] as HTMLInputElement).checked
                     = (originalCRs[i] as HTMLInputElement).checked
-          }
+        }
 
-          // Copy select states
-          const selectSelector = 'select'
-          const originalSelects = (contentEl as HTMLElement).querySelectorAll(selectSelector)
-          const copiedSelects = domDoc.querySelectorAll(selectSelector)
-          for (let i = 0; i < originalSelects.length; i++) {
-            copiedSelects[i].value = originalSelects[i].value
-          }
+        // Copy select states
+        const selectSelector = 'select'
+        const originalSelects = contentEl.querySelectorAll(selectSelector)
+        const copiedSelects = domDoc.querySelectorAll(selectSelector)
+        for (let i = 0; i < originalSelects.length; i++) {
+          copiedSelects[i].value = originalSelects[i].value
         }
 
         if (copyStyles) {
@@ -370,7 +339,7 @@ export function createPrint(
                   logMessages([error.message], 'warning')
                 }
 
-                newHeadEl.setAttribute('id', `vue-to-print-${i}`)
+                newHeadEl.setAttribute('id', `vue-create-print-${i}`)
                 if (nonce) {
                   newHeadEl.setAttribute('nonce', nonce)
                 }
@@ -382,7 +351,7 @@ export function createPrint(
               // Many browsers will do all sorts of weird things if they encounter an
               // empty `href` tag (which is invalid HTML). Some will attempt to load
               // the current page. Some will attempt to load the page"s parent
-              // directory. These problems can cause `react-to-print` to stop without
+              // directory. These problems can cause `vue-create-print` to stop without
               // any error being thrown. To avoid such problems we simply do not
               // attempt to load these links.
               if (node.getAttribute('href')) {
@@ -416,13 +385,13 @@ export function createPrint(
                   domDoc.head.appendChild(newHeadEl)
                 }
                 else {
-                  logMessages(['`react-to-print` encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
+                  logMessages(['`vue-create-print` encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
                   // `true` because this isn't an error: we are intentionally skipping this node
                   markLoaded(node)
                 }
               }
               else {
-                logMessages(['`react-to-print` encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
+                logMessages(['`vue-create-print` encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
                 // `true` because we"ve already shown a warning for this
                 markLoaded(node)
               }
@@ -441,5 +410,20 @@ export function createPrint(
 
     document.body.appendChild(printWindow)
   }
-  return handlePrint
+  const handleClick = () => {
+    const onBeforeGetContentOutput = onBeforeGetContent?.()
+    if (isPromise(onBeforeGetContentOutput)) {
+      onBeforeGetContentOutput
+        .then(() => handlePrint())
+        .catch((error: Error) => {
+          if (onPrintError) {
+            onPrintError('onBeforeGetContent', error)
+          }
+        })
+    }
+    else {
+      handlePrint()
+    }
+  }
+  return handleClick
 }

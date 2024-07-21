@@ -27,7 +27,7 @@ export interface PrintProp {
    * You may optionally provide a list of fonts which will be loaded into the printing iframe.
    * This is useful if you are using custom fonts
    */
-  fonts: FontOption[]
+  fonts?: FontOption[]
   /**
    * Set the nonce attribute for whitelisting script and style -elements for CSP (content security policy)
    */

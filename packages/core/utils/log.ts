@@ -1,23 +1,23 @@
-import { isString } from './index'
+import { isString } from 'lodash-es'
 
-class VueToPrintError extends Error {
+class VueCreatePrintError extends Error {
   constructor(message: string) {
     super(message)
-    this.name = 'vue-to-print'
+    this.name = 'vue-create-print'
   }
 }
 
 export function throwError(scope: string, msg: string) {
-  throw new VueToPrintError(`[${scope}] ${msg}`)
+  throw new VueCreatePrintError(`[${scope}] ${msg}`)
 }
 
 export function debugWarn(error: Error): void
 export function debugWarn(scope: string, msg: string): void
 export function debugWarn(scope: string | Error, msg?: string) {
-  const err = isString(scope) ? new VueToPrintError(`[${scope}] ${msg}`) : scope
+  const err = isString(scope) ? new VueCreatePrintError(`[${scope}] ${msg}`) : scope
   console.warn(err)
   // if (process.env.NODE_ENV !== 'production') {
-  //   const err = isString(scope) ? new VueToPrintError(`[${scope}] ${msg}`) : scope
+  //   const err = isString(scope) ? new VueCreatePrintError(`[${scope}] ${msg}`) : scope
   //   console.warn(err)
   // }
 }

@@ -35,9 +35,22 @@
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite build --watch",
-    "build": "cross-env NODE_ENV=production vite build"
+    "build": "cross-env NODE_ENV=production vite build",
+    "release": "release-it"
   },
   "release-it": {
     "git": false
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "vue-demi": "^0.14.8"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12"
   }
 }

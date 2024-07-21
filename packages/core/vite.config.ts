@@ -1,15 +1,9 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
-import { visualizer } from 'rollup-plugin-visualizer'
+// import { visualizer } from 'rollup-plugin-visualizer'
 
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-
-// const TRY_MOVE_STYLES_DELAY = 750 as const
-// console.log(process.env.NODE_ENV)
-// const isProd = process.env.NODE_ENV === 'production'
-// const isDev = process.env.NODE_ENV === 'development'
-// const isTest = process.env.NODE_ENV === 'test'
 
 export default defineConfig({
   plugins: [
@@ -20,6 +14,13 @@ export default defineConfig({
 
     dts({
       tsconfigPath: './tsconfig.json',
+      beforeWriteFile: (filePath, content) => {
+        const _content = content.replace(/vue-demi/g, 'vue')
+        return {
+          filePath,
+          content: _content,
+        }
+      },
     }),
   ],
 
