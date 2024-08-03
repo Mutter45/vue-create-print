@@ -12,6 +12,10 @@
     "preview": "vitepress preview",
     "release": "release-it"
   },
+  "dependencies": {
+    "@vitepress-demo-preview/component": "^2.3.2",
+    "@vitepress-demo-preview/plugin": "^1.2.3"
+  },
   "devDependencies": {
     "vitepress": "^1.2.3"
   },

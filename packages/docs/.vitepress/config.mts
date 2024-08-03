@@ -1,28 +1,29 @@
 import { defineConfig } from 'vitepress'
-
-// https://vitepress.dev/reference/site-config
+import { componentPreview, containerPreview } from '@vitepress-demo-preview/plugin'
+import sidebar from './config/sidebar'
 export default defineConfig({
   title: 'vue-to-print',
   description: 'web print for Vue',
+
+
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
+    logo: '/logo.svg',
     nav: [
-      { text: 'Home', link: '/' },
+      { text: '指南', link: '/' },
       { text: 'Examples', link: '/markdown-examples' },
+
     ],
 
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
-        ],
-      },
-    ],
+    sidebar,
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/Mutter45/vue-create-print' },
     ],
+  },
+  markdown: {
+    config(md) {
+      md.use(containerPreview)
+      md.use(componentPreview)
+    },
   },
 })

@@ -4,8 +4,7 @@ export default antfu(
   {
     formatters: true,
     ignores: [
-      'patches',
-      'playgrounds',
+      '**/docs',
       '**/types',
       '**/cache',
       '**/dist',

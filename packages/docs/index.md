@@ -6,6 +6,9 @@ hero:
   name: "vue-to-print"
   text: "web print for Vue"
   tagline: My great project tagline
+  image:
+    src: /logo.svg
+    alt: VitePress
   actions:
     - theme: brand
       text: Markdown Examples
