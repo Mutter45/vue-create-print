@@ -66,9 +66,9 @@ export interface PrintProp {
    */
   suppressErrors?: boolean
   /**
-   * Trigger action used to open browser print
+   * Trigger action used to open browser print Deprecated
    */
-  trigger?: (handlePrint: () => void) => void
+  // trigger?: (handlePrint: () => void) => void
 }
 declare global {
   interface Document {

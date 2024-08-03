@@ -7,7 +7,7 @@
     "moduleResolution": "bundler",
 
     "resolveJsonModule": true,
-    "types": ["lodash-es"],
+    "types": ["lodash-es", "node"],
     "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,

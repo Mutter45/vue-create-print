@@ -30,7 +30,6 @@
     "@antfu/eslint-config": "2.22.0-beta.3",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@release-it/bumper": "^6.0.1",
     "@tsconfig/node18": "^18.2.4",
     "@types/node": "^18.19.39",
     "@vitejs/plugin-vue": "^5.0.5",

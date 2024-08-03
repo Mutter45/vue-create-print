@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
 import { toValue } from 'vue-demi'
 import { delay, isFunction, isString, merge } from 'lodash-es'
-import { debugWarn, throwError } from './utils/log'
+import { createLogMessages, isPromise, loadImgNode, loadVideoNode, throwError } from './utils'
 import { defaultProps } from './constant'
-import { isPromise, loadImgNode, loadVideoNode } from './utils'
 import type { FontOption, PrintProp } from './types/index'
 
 export function createPrint(
@@ -25,19 +23,20 @@ export function createPrint(
     suppressErrors,
     removeAfterPrint,
   }
-  = merge({}, props, defaultProps)
+  = merge({}, defaultProps, props)
+  const logMessages = createLogMessages(suppressErrors)
   const getContent = () => {
     if (!isFunction(content)) {
-      debugWarn('vue-create-print', 'The "content" prop must be a function.')
+      throwError('The "content" prop must be a function.')
     }
     const _el = toValue(content())
     if (!_el) {
-      throwError('vue-create-print', 'Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
+      throwError('Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
     }
     if (isString(_el)) {
       const _selectEl = document.querySelector(_el)
       if (!_selectEl) {
-        throwError('vue-create-print', 'Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
+        throwError('Please ensure "content" is renderable before allowing "vue-create-print" to be called.')
       }
       return _selectEl as HTMLElement
     }
@@ -53,19 +52,7 @@ export function createPrint(
       }
     }
   }
-  const logMessages = (messages: unknown[], level: 'error' | 'warning' | 'debug' = 'error') => {
-    if (!suppressErrors) {
-      if (level === 'error') {
-        console.error(messages)
-      }
-      else if (level === 'warning') {
-        console.warn(messages)
-      }
-      else if (level === 'debug') {
-        console.debug(messages)
-      }
-    }
-  }
+
   const startPrint = (target: HTMLIFrameElement) => {
     // Some browsers such as Safari don't always behave well without this timeout
     delay(() => {
@@ -118,7 +105,7 @@ export function createPrint(
           else {
             // Some browsers, such as Firefox Android, do not support printing at all
             // https://developer.mozilla.org/en-US/docs/Web/API/Window/print
-            logMessages(['Printing for this browser is not currently possible: the browser does not have a `print` method available for iframes.'])
+            logMessages(['Printing for this browser is not currently possible, the browser does not have a `print` method available for iframes.'])
           }
 
           onAfterPrint?.()
@@ -126,7 +113,7 @@ export function createPrint(
         }
       }
       else {
-        logMessages(['Printing failed because the `contentWindow` of the print iframe did not load. This is possibly an error with `vue-create-print`.'])
+        logMessages(['Printing failed because the \'contentWindow\' of the print iframe is not loaded. This may be an internal error.'])
       }
     }, 500)
   }
@@ -187,7 +174,7 @@ export function createPrint(
       }
       else {
         logMessages([
-          '"vue-create-print" was unable to load a resource but will continue attempting to print the page',
+          'Unable to load a resource but will continue attempting to print the page',
           ...errorMessages,
         ])
         resourcesErrored.push(resource)
@@ -230,14 +217,14 @@ export function createPrint(
           }
           else {
             fonts.forEach(font => markLoaded(font)) // Pretend we loaded the fonts to allow printing to continue
-            logMessages(['"vue-create-print" is not able to load custom fonts because the browser does not support the FontFace API but will continue attempting to print the page'])
+            logMessages(['Unable to load custom fonts because the browser does not support the FontFace API but will continue attempting to print the page'])
           }
         }
 
         const defaultPageStyle = isFunction(pageStyle) ? pageStyle() : pageStyle
 
         if (!isString(defaultPageStyle)) {
-          logMessages([`"vue-create-print" expected a "string" from \`pageStyle\` but received "${typeof defaultPageStyle}". Styles from \`pageStyle\` will not be applied.`])
+          logMessages([`Expected a "string" from \`pageStyle\` but received "${typeof defaultPageStyle}". Styles from \`pageStyle\` will not be applied.`])
         }
         else {
           const styleEl = domDoc.createElement('style')
@@ -385,13 +372,13 @@ export function createPrint(
                   domDoc.head.appendChild(newHeadEl)
                 }
                 else {
-                  logMessages(['`vue-create-print` encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
+                  logMessages(['Encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
                   // `true` because this isn't an error: we are intentionally skipping this node
                   markLoaded(node)
                 }
               }
               else {
-                logMessages(['`vue-create-print` encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
+                logMessages(['Encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
                 // `true` because we"ve already shown a warning for this
                 markLoaded(node)
               }

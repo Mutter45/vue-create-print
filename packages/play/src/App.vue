@@ -1,6 +1,6 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
-import { PrintContextConsumer, VueCreatePrint, createPrint } from 'vue-create-print'
+import { VueCreatePrint, createPrint } from 'vue-create-print'
 import { ref } from 'vue'
 
 const b = ref<number>(0)
@@ -31,19 +31,6 @@ function handlePrintError(errorLocation: 'onBeforeGetContent' | 'onBeforePrint' 
 
 <template>
   <div>
-    <div ref="contentRef" class="print-content">
-      <h1>print content</h1>
-      <img
-        alt="Google logo"
-        src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-        width="200"
-      >
-      <div>{{ b }}</div>
-      <div>
-        <input v-model="radio" type="radio" value="a">
-        <input v-model="radio" type="radio" value="b">
-      </div>
-    </div>
     <VueCreatePrint
       :content="() => contentRef"
       :on-before-get-content="handleBeforeGetContent"
@@ -52,13 +39,29 @@ function handlePrintError(errorLocation: 'onBeforeGetContent' | 'onBeforePrint' 
       :on-print-error="handlePrintError"
       :show="true"
     >
-      <PrintContextConsumer v-slot="{ handlePrint }">
+      <template #content>
+        <div class="print-content">
+          <h1>print content</h1>
+          <img
+            alt="Google logo"
+            src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+            width="200"
+          >
+          <div>{{ b }}</div>
+          <p>ceshi</p>
+          <div>
+            <input v-model="radio" type="radio" value="a">
+            <input v-model="radio" type="radio" value="b">
+          </div>
+        </div>
+      </template>
+      <template #default="{ handlePrint }">
         <div class="btn-group">
           <button class="print-btn" @click="handlePrint">
             Print this out!
           </button>
         </div>
-      </PrintContextConsumer>
+      </template>
     </VueCreatePrint>
     <button class="print-btn" @click="handleClick">
       function Print

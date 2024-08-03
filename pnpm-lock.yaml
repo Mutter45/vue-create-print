@@ -24,9 +24,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.2.2
         version: 19.2.2
-      '@release-it/bumper':
-        specifier: ^6.0.1
-        version: 6.0.1(release-it@17.5.0(typescript@5.5.3))
       '@tsconfig/node18':
         specifier: ^18.2.4
         version: 18.2.4
@@ -653,12 +650,6 @@ packages:
   '@pnpm/npm-conf@2.2.2':
     resolution: {integrity: sha512-UA91GwWPhFExt3IizW6bOeY/pQ0BkuNwKjk9iQW9KqxluGCrg4VenZ0/L+2Y0+ZOtme72EVvg6v0zo3AMQRCeA==}
     engines: {node: '>=12'}
-
-  '@release-it/bumper@6.0.1':
-    resolution: {integrity: sha512-yeQsbGNMzzN0c/5JV1awXP6UHX/kJamXCKR6/daS0YQfj98SZXAcLn3JEq+qfK/Jq/cnATnlz5r6UY0cfBkm1A==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      release-it: ^17.0.0
 
   '@rollup/pluginutils@5.1.0':
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
@@ -1641,10 +1632,6 @@ packages:
 
   destr@2.0.3:
     resolution: {integrity: sha512-2N3BOUU4gYMpTP24s5rF5iP7BDr7uNTCs4ozw3kf/eKfvWSIu93GEBi5m427YoyJoeOzQ5smuu4nNAPGb8idSQ==}
-
-  detect-indent@7.0.1:
-    resolution: {integrity: sha512-Mc7QhQ8s+cLrnUfU/Ji94vG/r8M26m8f++vyres4ZoojaRDpZ1eSIh/EpzLNwlWuvzSZ3UbDFspjFvTDXe6e/g==}
-    engines: {node: '>=12.20'}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -4593,17 +4580,6 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@release-it/bumper@6.0.1(release-it@17.5.0(typescript@5.5.3))':
-    dependencies:
-      '@iarna/toml': 2.2.5
-      detect-indent: 7.0.1
-      fast-glob: 3.3.2
-      ini: 4.1.1
-      js-yaml: 4.1.0
-      lodash-es: 4.17.21
-      release-it: 17.5.0(typescript@5.5.3)
-      semver: 7.6.2
-
   '@rollup/pluginutils@5.1.0(rollup@4.18.0)':
     dependencies:
       '@types/estree': 1.0.5
@@ -5687,8 +5663,6 @@ snapshots:
   deprecation@2.3.1: {}
 
   destr@2.0.3: {}
-
-  detect-indent@7.0.1: {}
 
   dir-glob@3.0.1:
     dependencies:

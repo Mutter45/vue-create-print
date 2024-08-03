@@ -1,6 +1,8 @@
-import { defineComponent, inject, provide, toRaw, toRefs } from 'vue-demi'
+import type { VNode } from 'vue-demi'
+import { defineComponent, toRaw } from 'vue-demi'
 import { createPrint } from './createPrint'
 import type { PrintProp } from './types/index'
+import { createLogMessages, createPrintId } from './utils'
 
 const props = [
   'bodyClass',
@@ -17,37 +19,42 @@ const props = [
   'print',
   'removeAfterPrint',
   'suppressErrors',
-  'trigger',
-  'show',
 ] as const
+
 export const VueCreatePrint = defineComponent({
   name: 'VueCreatePrint',
   props: props as unknown as any,
   setup(props, { slots }) {
-    const { show } = toRefs(props)
-    // eslint-disable-next-line no-console
-    console.log(toRaw(props))
-    const handlePrint = createPrint(toRaw(props) as unknown as PrintProp)
-    provide('handlePrint', handlePrint)
+    const logMessages = createLogMessages()
+    const printId = createPrintId()
+    const rawProps = toRaw(props) as unknown as PrintProp
+    if (slots.content) {
+      rawProps.content = () => `[data-print-id="${printId}"]`
+    }
 
-    return () => (
-      [
-        slots.default ? slots.default() : null,
-        (slots.content && show.value) ? slots.content() : null,
-      ]
-    )
-  },
-})
-export const PrintContextConsumer = defineComponent({
-  name: 'PrintContextConsumer',
-  setup(_, { slots }) {
-    const handlePrint = inject<() => void>('handlePrint')
-    return () => (
-      slots.default
-        ? slots.default({
-          handlePrint,
-        })
-        : null
-    )
+    const getModifiedContent = (content?: VNode[]) => {
+      if (Number(content?.length) > 1) {
+        logMessages(['Multiple root tags appear,only the content of the first root tag will be printed.'])
+      }
+      return content?.map((vNode) => {
+        vNode.props = { ...vNode.props, 'data-print-id': printId }
+        return vNode
+      })
+    }
+    const handlePrint = createPrint(rawProps)
+    return () => {
+      return Object.keys(slots).map((it) => {
+        let vNode: VNode[] | undefined
+        if (it === 'default') {
+          vNode = slots[it]?.({
+            handlePrint,
+          })
+        }
+        if (it === 'content') {
+          vNode = getModifiedContent(slots[it]?.())
+        }
+        return vNode
+      })
+    }
   },
 })

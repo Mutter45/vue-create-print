@@ -1,5 +1,4 @@
-import { isString } from 'lodash-es'
-
+const MESSAGE_PREFIX = '[vue-create-print]:'
 class VueCreatePrintError extends Error {
   constructor(message: string) {
     super(message)
@@ -7,17 +6,24 @@ class VueCreatePrintError extends Error {
   }
 }
 
-export function throwError(scope: string, msg: string) {
-  throw new VueCreatePrintError(`[${scope}] ${msg}`)
+export function throwError(msg: string) {
+  throw new VueCreatePrintError(`${MESSAGE_PREFIX} ${msg}`)
 }
-
-export function debugWarn(error: Error): void
-export function debugWarn(scope: string, msg: string): void
-export function debugWarn(scope: string | Error, msg?: string) {
-  const err = isString(scope) ? new VueCreatePrintError(`[${scope}] ${msg}`) : scope
-  console.warn(err)
-  // if (process.env.NODE_ENV !== 'production') {
-  //   const err = isString(scope) ? new VueCreatePrintError(`[${scope}] ${msg}`) : scope
-  //   console.warn(err)
-  // }
+export function createLogMessages(suppressErrors: boolean = false) {
+  return suppressErrors ? () => {} : logMessages
+}
+export function logMessages(messages: unknown[], level: 'error' | 'warning' | 'debug' = 'error') {
+  if (process.env.NODE_ENV === 'development') {
+    const logMessages = messages.map(msg => `${MESSAGE_PREFIX} ${msg}`).join('\n')
+    if (level === 'error') {
+      console.error(logMessages)
+    }
+    else if (level === 'warning') {
+      console.warn(logMessages)
+    }
+    else if (level === 'debug') {
+      // eslint-disable-next-line no-console
+      console.debug(logMessages)
+    }
+  }
 }
