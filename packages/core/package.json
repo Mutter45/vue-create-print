@@ -1,6 +1,6 @@
 {
   "name": "vue-create-print",
-  "version": "0.0.4-beta.1",
+  "version": "0.1.0",
   "description": "web print for vue2.x and vue3.x",
   "author": "Mutter45 <mutter45@foxmail.com>",
   "license": "ISC",

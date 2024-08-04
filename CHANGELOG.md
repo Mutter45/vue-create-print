@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.0
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- Add Component and improve createPrint &nbsp;-&nbsp; by **Mutter** [<samp>(6fdbf)</samp>](https://github.com/Mutter45/vue-create-print/commit/6fdbfc6)
+- Add usage documentation &nbsp;-&nbsp; by **Mutter** [<samp>(8f5ac)</samp>](https://github.com/Mutter45/vue-create-print/commit/8f5acd2)
+- Improve createPrint &nbsp;-&nbsp; by **Mutter** [<samp>(4a83b)</samp>](https://github.com/Mutter45/vue-create-print/commit/4a83bce)
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Build config &nbsp;-&nbsp; by **Mutter** [<samp>(fef90)</samp>](https://github.com/Mutter45/vue-create-print/commit/fef9057)
+- Type error &nbsp;-&nbsp; by **Mutter** [<samp>(62dbe)</samp>](https://github.com/Mutter45/vue-create-print/commit/62dbeea)
+- Build error &nbsp;-&nbsp; by **Mutter** [<samp>(d42e5)</samp>](https://github.com/Mutter45/vue-create-print/commit/d42e532)
+- Build &nbsp;-&nbsp; by **Mutter** [<samp>(3cab4)</samp>](https://github.com/Mutter45/vue-create-print/commit/3cab468)
+- Build &nbsp;-&nbsp; by **Mutter** [<samp>(ef429)</samp>](https://github.com/Mutter45/vue-create-print/commit/ef4290c)
+- Build &nbsp;-&nbsp; by **Mutter** [<samp>(c986e)</samp>](https://github.com/Mutter45/vue-create-print/commit/c986e9e)
+- Build &nbsp;-&nbsp; by **Mutter** [<samp>(544c1)</samp>](https://github.com/Mutter45/vue-create-print/commit/544c107)
+- Ci config &nbsp;-&nbsp; by **Mutter** [<samp>(26787)</samp>](https://github.com/Mutter45/vue-create-print/commit/267872a)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Mutter45/vue-create-print/compare/0.0.4-beta.1...master)
+
 ## 0.0.4-beta.1
 
 ### &nbsp;&nbsp;&nbsp;Features
