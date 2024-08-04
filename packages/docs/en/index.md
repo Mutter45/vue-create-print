@@ -10,7 +10,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /markdown-examples
+      link: /en//guide
     - theme: alt
       text: github
       link: https://github.com/Mutter45/vue-create-print
