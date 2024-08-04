@@ -4,12 +4,12 @@ export default antfu(
   {
     formatters: true,
     ignores: [
-      '**/docs',
       '**/types',
       '**/cache',
       '**/dist',
       '**/.temp',
       '**/*.svg',
+      '**/*.md',
     ],
   },
   {
@@ -30,5 +30,22 @@ export default antfu(
       'ts/no-dynamic-delete': 'off',
     },
   },
-
+  {
+    files: [
+      '**/*.demo.vue',
+    ],
+    rules: {
+      'no-alert': 'off',
+      'no-console': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      'no-restricted-imports': 'off',
+      'vue/no-unused-vars': 'off',
+      'vue/no-unused-refs': 'off',
+      'vue/require-v-for-key': 'off',
+      'ts/no-unused-vars': 'off',
+      'ts/no-redeclare': 'off',
+      'unused-imports/no-unused-vars': 'off',
+    },
+  },
 )
