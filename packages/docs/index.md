@@ -1,27 +1,28 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
-  name: "vue-to-print"
-  text: "web print for Vue"
-  tagline: My great project tagline
+  name: "vue-create-print"
+  text: "Vue中友好的使用打印"
   image:
     src: /logo.svg
-    alt: VitePress
+    alt: vue-create-print
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 快速开始
+      link: /guide
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: github
+      link: https://github.com/Mutter45/vue-create-print
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: 🛠️
+    title: 更强的功能
+    details: 支持函数式和组件使用
+  - icon: 🔗
+    title: 更好的兼容性  
+    details: Vue 3 和 Vue2
+  - icon: 🔷
+    title: 类型友好
+    details: 采用Typescript编写，更佳的类型提示
 ---

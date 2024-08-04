@@ -38,7 +38,7 @@ export interface PrintProp {
   /**
    * Callback function to listen for printing errors
    */
-  onPrintError?: (errorLocation: "onBeforeGetContent" | "onBeforePrint" | "print", error: Error) => void
+  onPrintError?: (errorLocation: "onBeforePrint" | "print", error: Error) => void
   /**
    * Override default print window styling
    */

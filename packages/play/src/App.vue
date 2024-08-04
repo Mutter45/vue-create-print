@@ -41,6 +41,7 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
       :on-after-print="handleAfterPrint"
       :on-print-error="handlePrintError"
       :show="true"
+      :preserve-after-print="true"
     >
       <template #content>
         <div class="print-content">
