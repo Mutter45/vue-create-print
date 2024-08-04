@@ -12,6 +12,5 @@ export const defaultProps = {
           }
       }
   `,
-  removeAfterPrint: false,
   suppressErrors: false,
 }

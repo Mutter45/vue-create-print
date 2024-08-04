@@ -51,7 +51,7 @@ export interface PrintProp {
    * Remove the iframe after printing.
    * NOTE: `onAfterPrint` will run before the iframe is removed
    */
-  removeAfterPrint?: boolean
+  preserveAfterPrint?: boolean
   /**
    * Suppress error messages
    */

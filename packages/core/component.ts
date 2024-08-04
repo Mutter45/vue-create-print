@@ -15,7 +15,7 @@ const props = [
   'onPrintError',
   'pageStyle',
   'print',
-  'removeAfterPrint',
+  'preserveAfterPrint',
   'suppressErrors',
 ] as const
 

@@ -19,7 +19,7 @@ export function createPrint(
     pageStyle,
     print,
     suppressErrors,
-    removeAfterPrint,
+    preserveAfterPrint,
   }
     = merge({}, defaultProps, props)
   const logMessages = createLogMessages(suppressErrors)
@@ -42,7 +42,7 @@ export function createPrint(
     return _el as HTMLElement
   }
   const handleRemoveIframe = (force?: boolean) => {
-    if (force || removeAfterPrint) {
+    if (force || !preserveAfterPrint) {
       // The user may have removed the iframe in `onAfterPrint`
       const documentPrintWindow = document.getElementById('printWindow')
       if (documentPrintWindow) {
