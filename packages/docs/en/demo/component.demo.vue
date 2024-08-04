@@ -13,7 +13,7 @@ function handleBeforePrint() {
   num.value += 10
   return Promise.resolve()
 }
-function handlePrintError(errorLocation: 'onBeforeGetContent' | 'onBeforePrint' | 'print', err: Error) {
+function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) {
   console.error('print error', err, errorLocation)
 }
 </script>

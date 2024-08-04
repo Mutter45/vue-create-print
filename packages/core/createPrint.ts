@@ -377,7 +377,7 @@ export function createPrint(
         .then(() => handlePrint())
         .catch((error: Error) => {
           if (onPrintError) {
-            onPrintError('onBeforeGetContent', error)
+            onPrintError('onBeforePrint', error)
           }
         })
     }

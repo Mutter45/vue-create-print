@@ -15,7 +15,7 @@ const handleClick = createPrint({
   onAfterPrint: () => {
     console.log('print success')
   },
-  onPrintError: (errorLocation: 'onBeforeGetContent' | 'onBeforePrint' | 'print', err: Error) => {
+  onPrintError: (errorLocation: 'onBeforePrint' | 'print', err: Error) => {
     console.error('print error', errorLocation, err)
   },
 })
