@@ -13,7 +13,7 @@
     "dev:play": "pnpm --filter @vue-create-print/play dev",
     "dev:core": " pnpm --filter vue-create-print dev",
     "docs:dev": "pnpm --filter @vue-create-print/docs dev",
-    "build": "run-p build:core build:docs",
+    "build": "run-s build:core build:docs",
     "build:core": "pnpm --filter vue-create-print build",
     "build:docs": "pnpm --filter @vue-create-print/docs build",
     "lint": "eslint --cache .",
