@@ -3,11 +3,15 @@
 import { VueCreatePrint, createPrint } from 'vue-create-print'
 import { ref } from 'vue'
 
-const b = ref<number>(0)
-const radio = ref<string>('a')
-const contentRef = ref<HTMLDivElement | null>(null)
+const b = ref(0)
+const radio = ref('a')
+const contentRef = ref<HTMLDivElement>()
 const handleClick = createPrint({
-  content: () => contentRef.value!,
+  content: () => contentRef.value,
+  onBeforePrint: () => {
+    console.log('before print')
+    return Promise.resolve()
+  },
   onAfterPrint: () => {
     console.log('print success')
   },
@@ -18,13 +22,13 @@ const handleClick = createPrint({
 function handleAfterPrint() {
   console.log('after print')
 }
-function handleBeforeGetContent() {
-  console.log('before get content')
-}
+
 function handleBeforePrint() {
   console.log('before print')
+  b.value += 10
+  return Promise.resolve()
 }
-function handlePrintError(errorLocation: 'onBeforeGetContent' | 'onBeforePrint' | 'print', err: Error) {
+function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) {
   console.error('print error', err, errorLocation)
 }
 </script>
@@ -33,9 +37,8 @@ function handlePrintError(errorLocation: 'onBeforeGetContent' | 'onBeforePrint' 
   <div>
     <VueCreatePrint
       :content="() => contentRef"
-      :on-before-get-content="handleBeforeGetContent"
-      :on-after-print="handleAfterPrint"
       :on-before-print="handleBeforePrint"
+      :on-after-print="handleAfterPrint"
       :on-print-error="handlePrintError"
       :show="true"
     >

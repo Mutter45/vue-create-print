@@ -10,12 +10,10 @@ export function createPrint(
   const {
     bodyClass,
     content,
-    copyStyles,
     documentTitle,
     fonts,
     nonce,
     onAfterPrint,
-    onBeforeGetContent,
     onBeforePrint,
     onPrintError,
     pageStyle,
@@ -23,7 +21,7 @@ export function createPrint(
     suppressErrors,
     removeAfterPrint,
   }
-  = merge({}, defaultProps, props)
+    = merge({}, defaultProps, props)
   const logMessages = createLogMessages(suppressErrors)
   const getContent = () => {
     if (!isFunction(content)) {
@@ -117,25 +115,8 @@ export function createPrint(
       }
     }, 500)
   }
-  const triggerPrint = (target: HTMLIFrameElement) => {
-    if (onBeforePrint) {
-      const onBeforePrintOutput = onBeforePrint()
-      if (isPromise(onBeforePrintOutput)) {
-        onBeforePrintOutput
-          .then(() => startPrint(target))
-          .catch((error: Error) => onPrintError?.('onBeforePrint', error))
-      }
-      else {
-        startPrint(target)
-      }
-    }
-    else {
-      startPrint(target)
-    }
-  }
   const handlePrint = () => {
     const contentEl = getContent()
-
     const printWindow = document.createElement('iframe')
     printWindow.width = `${document.documentElement.clientWidth}px`
     printWindow.height = `${document.documentElement.clientHeight}px`
@@ -147,18 +128,16 @@ export function createPrint(
     printWindow.srcdoc = '<!DOCTYPE html>'
 
     const clonedContentNodes = contentEl.cloneNode(true)
-
     const globalLinkNodes = document.querySelectorAll('link[rel~=\'stylesheet\'], link[as=\'style\']')
     const renderComponentImgNodes = (clonedContentNodes as Element).querySelectorAll('img')
     const renderComponentVideoNodes = (clonedContentNodes as Element).querySelectorAll('video')
 
     const numFonts = fonts ? fonts.length : 0
     const numResourcesToLoad
-        = globalLinkNodes.length
-        + renderComponentImgNodes.length
-        + renderComponentVideoNodes.length
-        + numFonts
-
+      = globalLinkNodes.length
+      + renderComponentImgNodes.length
+      + renderComponentVideoNodes.length
+      + numFonts
     const resourcesLoaded: (Element | FontOption | FontFace)[] = []
 
     const resourcesErrored: (Element | FontOption | FontFace)[] = []
@@ -185,7 +164,7 @@ export function createPrint(
       const numResourcesManaged = resourcesLoaded.length + resourcesErrored.length
 
       if (numResourcesManaged === numResourcesToLoad) {
-        triggerPrint(printWindow)
+        startPrint(printWindow)
       }
     }
 
@@ -292,7 +271,7 @@ export function createPrint(
         const copiedCRs = domDoc.querySelectorAll(checkedSelector)
         for (let i = 0; i < originalCRs.length; i++) {
           (copiedCRs[i] as HTMLInputElement).checked
-                    = (originalCRs[i] as HTMLInputElement).checked
+            = (originalCRs[i] as HTMLInputElement).checked
         }
 
         // Copy select states
@@ -303,92 +282,86 @@ export function createPrint(
           copiedSelects[i].value = originalSelects[i].value
         }
 
-        if (copyStyles) {
-          const styleAndLinkNodes = document.querySelectorAll('style, link[rel~=\'stylesheet\'], link[as=\'style\']')
+        const styleAndLinkNodes = document.querySelectorAll('style, link[rel~=\'stylesheet\'], link[as=\'style\']')
 
-          for (let i = 0, styleAndLinkNodesLen = styleAndLinkNodes.length; i < styleAndLinkNodesLen; ++i) {
-            const node = styleAndLinkNodes[i]
+        for (let i = 0, styleAndLinkNodesLen = styleAndLinkNodes.length; i < styleAndLinkNodesLen; ++i) {
+          const node = styleAndLinkNodes[i]
 
-            if (node.tagName.toLowerCase() === 'style') { // <style> nodes
-              const newHeadEl = domDoc.createElement(node.tagName)
-              const sheet = (node as HTMLStyleElement).sheet as CSSStyleSheet
-              if (sheet) {
-                let styleCSS = ''
-                try {
-                  const cssLength = sheet.cssRules.length
-                  for (let j = 0; j < cssLength; ++j) {
-                    if (typeof sheet.cssRules[j].cssText === 'string') {
-                      styleCSS += `${sheet.cssRules[j].cssText}\r\n`
-                    }
+          if (node.tagName.toLowerCase() === 'style') { // <style> nodes
+            const newHeadEl = domDoc.createElement(node.tagName)
+            const sheet = (node as HTMLStyleElement).sheet as CSSStyleSheet
+            if (sheet) {
+              let styleCSS = ''
+              try {
+                const cssLength = sheet.cssRules.length
+                for (let j = 0; j < cssLength; ++j) {
+                  if (typeof sheet.cssRules[j].cssText === 'string') {
+                    styleCSS += `${sheet.cssRules[j].cssText}\r\n`
                   }
                 }
-                catch (error: any) {
-                  logMessages([error.message], 'warning')
+              }
+              catch (error: any) {
+                logMessages([error.message], 'warning')
+              }
+
+              newHeadEl.setAttribute('id', `vue-create-print-${i}`)
+              if (nonce) {
+                newHeadEl.setAttribute('nonce', nonce)
+              }
+              newHeadEl.appendChild(domDoc.createTextNode(styleCSS))
+              domDoc.head.appendChild(newHeadEl)
+            }
+          }
+          else { // <link> nodes, and any others
+            // Many browsers will do all sorts of weird things if they encounter an
+            // empty `href` tag (which is invalid HTML). Some will attempt to load
+            // the current page. Some will attempt to load the page"s parent
+            // directory. These problems can cause `vue-create-print` to stop without
+            // any error being thrown. To avoid such problems we simply do not
+            // attempt to load these links.
+            if (node.getAttribute('href')) {
+              // Browser's don't display `disabled` `link` nodes, so we need to filter them out
+              // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled
+              // https://caniuse.com/mdn-html_elements_link_disabled
+              // TODO: ideally we could just filter these out on selection using
+              // a selector such as: `link[rel='stylesheet']:not([disabled])`
+              // https://stackoverflow.com/questions/27733826/css-selectors-for-excluding-by-attribute-presence
+              // However, that doesn't seem to work. Why?
+              if (!node.hasAttribute('disabled')) {
+                const newHeadEl = domDoc.createElement(node.tagName)
+
+                // Manually re-create the node
+                // TODO: document why cloning the node won't work? I don't recall
+                // the reasoning behind why we do it this way
+                // NOTE: node.attributes has NamedNodeMap type that is not an Array
+                // and can be iterated only via direct [i] access
+                for (let j = 0, attrLen = node.attributes.length; j < attrLen; ++j) {
+                  const attr = node.attributes[j]
+                  if (attr) {
+                    newHeadEl.setAttribute(attr.nodeName, attr.nodeValue || '')
+                  }
                 }
 
-                newHeadEl.setAttribute('id', `vue-create-print-${i}`)
+                newHeadEl.onload = () => markLoaded(newHeadEl)
+                newHeadEl.onerror = (_event, _source, _lineno, _colno, error) => markLoaded(newHeadEl, ['Failed to load', newHeadEl, 'Error:', error])
                 if (nonce) {
                   newHeadEl.setAttribute('nonce', nonce)
                 }
-                newHeadEl.appendChild(domDoc.createTextNode(styleCSS))
                 domDoc.head.appendChild(newHeadEl)
               }
-            }
-            else { // <link> nodes, and any others
-              // Many browsers will do all sorts of weird things if they encounter an
-              // empty `href` tag (which is invalid HTML). Some will attempt to load
-              // the current page. Some will attempt to load the page"s parent
-              // directory. These problems can cause `vue-create-print` to stop without
-              // any error being thrown. To avoid such problems we simply do not
-              // attempt to load these links.
-              if (node.getAttribute('href')) {
-                // Browser's don't display `disabled` `link` nodes, so we need to filter them out
-                // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled
-                // https://caniuse.com/mdn-html_elements_link_disabled
-                // TODO: ideally we could just filter these out on selection using
-                // a selector such as: `link[rel='stylesheet']:not([disabled])`
-                // https://stackoverflow.com/questions/27733826/css-selectors-for-excluding-by-attribute-presence
-                // However, that doesn't seem to work. Why?
-                if (!node.hasAttribute('disabled')) {
-                  const newHeadEl = domDoc.createElement(node.tagName)
-
-                  // Manually re-create the node
-                  // TODO: document why cloning the node won't work? I don't recall
-                  // the reasoning behind why we do it this way
-                  // NOTE: node.attributes has NamedNodeMap type that is not an Array
-                  // and can be iterated only via direct [i] access
-                  for (let j = 0, attrLen = node.attributes.length; j < attrLen; ++j) {
-                    const attr = node.attributes[j]
-                    if (attr) {
-                      newHeadEl.setAttribute(attr.nodeName, attr.nodeValue || '')
-                    }
-                  }
-
-                  newHeadEl.onload = () => markLoaded(newHeadEl)
-                  newHeadEl.onerror = (_event, _source, _lineno, _colno, error) => markLoaded(newHeadEl, ['Failed to load', newHeadEl, 'Error:', error])
-                  if (nonce) {
-                    newHeadEl.setAttribute('nonce', nonce)
-                  }
-                  domDoc.head.appendChild(newHeadEl)
-                }
-                else {
-                  logMessages(['Encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
-                  // `true` because this isn't an error: we are intentionally skipping this node
-                  markLoaded(node)
-                }
-              }
               else {
-                logMessages(['Encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
-                // `true` because we"ve already shown a warning for this
+                logMessages(['Encountered a <link> tag with a `disabled` attribute and will ignore it. Note that the `disabled` attribute is deprecated, and some browsers ignore it. You should stop using it. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#attr-disabled. The <link> is:', node], 'warning')
+                // `true` because this isn't an error: we are intentionally skipping this node
                 markLoaded(node)
               }
             }
+            else {
+              logMessages(['Encountered a <link> tag with an empty `href` attribute. In addition to being invalid HTML, this can cause problems in many browsers, and so the <link> was not loaded. The <link> is:', node], 'warning')
+              // `true` because we"ve already shown a warning for this
+              markLoaded(node)
+            }
           }
         }
-      }
-
-      if (numResourcesToLoad === 0 || !copyStyles) {
-        triggerPrint(printWindow)
       }
     }
 
@@ -398,9 +371,9 @@ export function createPrint(
     document.body.appendChild(printWindow)
   }
   const handleClick = () => {
-    const onBeforeGetContentOutput = onBeforeGetContent?.()
-    if (isPromise(onBeforeGetContentOutput)) {
-      onBeforeGetContentOutput
+    const onBeforePrintOutput = onBeforePrint?.()
+    if (isPromise(onBeforePrintOutput)) {
+      onBeforePrintOutput
         .then(() => handlePrint())
         .catch((error: Error) => {
           if (onPrintError) {
@@ -409,6 +382,7 @@ export function createPrint(
         })
     }
     else {
+      logMessages(['The return value is not a `promise`, and the printed content may not be what you expect.'], 'warning')
       handlePrint()
     }
   }

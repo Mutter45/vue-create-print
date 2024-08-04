@@ -1,5 +1,4 @@
 export const defaultProps = {
-  copyStyles: true,
   pageStyle: () => `
       @page {
           /* Remove browser default header (title) and footer (url) */

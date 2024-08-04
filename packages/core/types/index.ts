@@ -6,19 +6,14 @@ export interface FontOption {
   style?: string
 }
 export interface PrintProp {
+ /**
+  * Content to be printed
+  */
+  content: () => HTMLElement | string | MaybeRef<HTMLElement | undefined>
   /**
    * One or more class names to pass to the print window, separated by spaces
    */
   bodyClass?: string
-  /**
-   * Content to be printed
-   */
-  content:() => HTMLElement | string | MaybeRef<HTMLElement | undefined>
-  /**
-   * Copy all <style> and <link type="stylesheet" /> tags from <head> inside the parent window into the print window.
-   * (default: true)
-   */
-  copyStyles?: boolean
   /**
    * Set the title for printing when saving as a file
    */
@@ -37,13 +32,9 @@ export interface PrintProp {
    */
   onAfterPrint?: () => void
   /**
-   * Callback function to trigger before page content is retrieved for printing
+   * Callback function to trigger before print Callback function to trigger before page content is retrieved for printing
    */
-  onBeforeGetContent?: () => void | Promise<any>
-  /**
-   * Callback function to trigger before print
-   */
-  onBeforePrint?: () => void | Promise<any>
+  onBeforePrint?: () => Promise<any>
   /**
    * Callback function to listen for printing errors
    */
@@ -65,10 +56,6 @@ export interface PrintProp {
    * Suppress error messages
    */
   suppressErrors?: boolean
-  /**
-   * Trigger action used to open browser print Deprecated
-   */
-  // trigger?: (handlePrint: () => void) => void
 }
 declare global {
   interface Document {

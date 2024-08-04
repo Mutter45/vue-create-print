@@ -7,12 +7,10 @@ import { createLogMessages, createPrintId } from './utils'
 const props = [
   'bodyClass',
   'content',
-  'copyStyles',
   'documentTitle',
   'fonts',
   'nonce',
   'onAfterPrint',
-  'onBeforeGetContent',
   'onBeforePrint',
   'onPrintError',
   'pageStyle',
