@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.5
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- Packaging optimization &nbsp;-&nbsp; by **Mutter** [<samp>(67cd6)</samp>](https://github.com/Mutter45/vue-create-print/commit/67cd61a)
+- Add logo &nbsp;-&nbsp; by **Mutter** [<samp>(279f3)</samp>](https://github.com/Mutter45/vue-create-print/commit/279f303)
+- Add rimraf &nbsp;-&nbsp; by **Mutter** [<samp>(5571d)</samp>](https://github.com/Mutter45/vue-create-print/commit/5571d20)
+- Update README &nbsp;-&nbsp; by **Mutter** [<samp>(443ed)</samp>](https://github.com/Mutter45/vue-create-print/commit/443edb6)
+- Add more keywords &nbsp;-&nbsp; by **Mutter** [<samp>(5b635)</samp>](https://github.com/Mutter45/vue-create-print/commit/5b6351a)
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Img alt error &nbsp;-&nbsp; by **Mutter** [<samp>(17d0c)</samp>](https://github.com/Mutter45/vue-create-print/commit/17d0c7f)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Mutter45/vue-create-print/compare/0.1.4...master)
+
 ## 0.1.4
 
 ### &nbsp;&nbsp;&nbsp;Features

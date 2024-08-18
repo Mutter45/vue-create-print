@@ -1,7 +1,7 @@
 {
   "name": "@vue-create-print/play",
   "type": "module",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "vue-create-print playground",
   "author": "Mutter45 <mutter45@foxmail.com>",
