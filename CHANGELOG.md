@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Spell error &nbsp;-&nbsp; by **Mutter** [<samp>(b7fed)</samp>](https://github.com/Mutter45/vue-create-print/commit/b7feda0)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Mutter45/vue-create-print/compare/0.1.1...master)
+
 ## 0.1.1
 
 ### &nbsp;&nbsp;&nbsp;Features
