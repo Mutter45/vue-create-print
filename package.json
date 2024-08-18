@@ -7,7 +7,9 @@
   "author": "Mutter45 <mutter45@foxmail.com>",
   "license": "ISC",
   "keywords": [
-    "print"
+    "print",
+    "print-vue2",
+    "print-vue3"
   ],
   "scripts": {
     "dev": "run-p dev:core dev:play",
