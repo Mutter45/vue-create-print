@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- Build config &nbsp;-&nbsp; by **Mutter** [<samp>(09a37)</samp>](https://github.com/Mutter45/vue-create-print/commit/09a37be)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Mutter45/vue-create-print/compare/0.1.3...master)
+
 ## 0.1.3
 
 ### &nbsp;&nbsp;&nbsp;Features
