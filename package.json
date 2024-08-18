@@ -1,6 +1,7 @@
 {
   "name": "vue-create-print-monorepo",
   "version": "0.1.0",
+  "private": true,
   "packageManager": "pnpm@9.3.0",
   "description": "web print for vue2.x and vue3.x",
   "author": "Mutter45 <mutter45@foxmail.com>",
