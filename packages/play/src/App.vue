@@ -47,8 +47,8 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
         <div class="print-content">
           <h1>print content</h1>
           <img
-            alt="Google logo"
-            src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+            alt="vue-create-print logo"
+            src="@/assets/logo.svg"
             width="200"
           >
           <div>{{ b }}</div>
