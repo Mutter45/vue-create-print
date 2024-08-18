@@ -1,12 +1,7 @@
 {
   "plugins": {
     "release-it-pnpm": {
-      "inFile": "CHANGELOG.md",
-      "packages": {
-        "@vue-create-print/play": {},
-        "@vue-create-print/docs": {},
-        "vue-create-print": {}
-      }
+      "inFile": "CHANGELOG.md"
     }
   },
   "npm": {
@@ -15,7 +10,12 @@
   "git": {
     "commitMessage": "chore: release ${version}"
   },
+  "github": {
+    "release": true
+  },
   "hooks": {
+    "after:bump": "pnpm run build",
+    "after:git:release": "echo After git push, before github release",
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   }
 }
