@@ -1,7 +1,12 @@
 {
   "plugins": {
     "release-it-pnpm": {
-      "inFile": "CHANGELOG.md"
+      "inFile": "CHANGELOG.md",
+      "packages": {
+        "@vue-create-print/play": {},
+        "@vue-create-print/docs": {},
+        "vue-create-print": {}
+      }
     }
   },
   "npm": {
