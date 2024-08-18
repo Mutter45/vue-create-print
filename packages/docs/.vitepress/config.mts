@@ -7,7 +7,7 @@ export default defineConfig({
   title: 'vue-create-print',
   description: 'web print for Vue2 and Vue3',
   head: [
-    ['link', { rel: 'icon', type: 'image/x-icon', href: '/vue-create-print/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/x-icon', href: './logo.svg' }],
   ],
   locales: {
     root: {
@@ -50,5 +50,5 @@ export default defineConfig({
       md.use(componentPreview)
     },
   },
-  vite: viteConfig as any,
+  vite: viteConfig,
 })

@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "vue-create-print"
+  name: "vue create print"
   text: "User-friendly printing in Vue"
   image:
     src: /logo.svg

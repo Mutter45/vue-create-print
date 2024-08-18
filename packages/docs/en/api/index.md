@@ -16,7 +16,7 @@ The API for function-based and component-based usage have the same parameters, b
 | **`onBeforePrint?`** | `() => Promise<void>` | Callback function that triggers before print. This can be used to change the content on the page before printing as an alternative to, or in conjunction with `@media print` queries |
 | **`onPrintError?`** | `(errorLocation: 'onBeforePrint' \| 'print', error: Error) => void` | Called if there is a printing error serious enough that printing cannot continue. Currently limited to Promise rejections in `onBeforePrint`, and `print`. Use this to attempt to print again. `errorLocation` will tell you where the Promise was rejected |
 | **`pageStyle?`** | `string` | `react-to-print` sets some basic styles to help improve page printing, notably, removing the header and footer that most browsers add. Use this to override these styles and provide your own |
-| **`preserveAfterPrint?`** | `boolean` | Remove the iframe after printing. NOTE: `onAfterPrint` will run before the iframe is removed |
+| **`preserveAfterPrint?`** | `boolean` | Remove the iframe after printing. NOTE: `preserveAfterPrint` will run before the iframe is removed |
 | **`print?`** | `(iframe: HTMLIFrameElement) => Promise<void>` | If passed, this function will be used instead of `window.print` to print the content. Use this to print in non-browser environments such as Electron |
 | **`suppressErrors?`** | `boolean` | When passed, prevents `console` logging of errors |
 

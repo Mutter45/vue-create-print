@@ -18,7 +18,7 @@
 | **`onBeforePrint?`** | `() => Promise<any>` | 在打印前触发的回调函数。这可用于在打印之前更改页面上的内容，作为打印查询的替代方法，或与 `@media print` 查询结合使用 |
 | **`onPrintError?`** | `(errorLocation: 'onBeforePrint' \| 'print', error: Error) => void` | 如果打印错误严重到足以导致打印无法继续，则调用。目前仅限于 `onBeforePrint` 和 `print` 中的 **Promise** 拒绝。使用此选项可尝试再次打印。`errorLocation` 会显示处于那个回调函数内 |
 | **`pageStyle?`** | `string` | `vue-create-print` 设置了一些基本样式来帮助改进页面打印，特别是删除大多数浏览器添加的页眉和页脚。使用它来覆盖这些样式并提供您自己的样式 |
-| **`preserveAfterPrint?`** | `boolean` | 打印后删除 iframe,**`onAfterPrint`** 将在删除 iframe 之前运行  |
+| **`preserveAfterPrint?`** | `boolean` | 打印后删除 iframe,**`preserveAfterPrint`** 将在删除 iframe 之前运行  |
 | **`print?`** | `(iframe: HTMLIFrameElement) => Promise<void>` | 使用此函数代替 `window.print` 来打印内容。使用它在非浏览器环境（如 Electron）中打印 |
 | **`suppressErrors?`** | `boolean` | 默认值为 `false`, 传 `true`将阻止`console`记录错误 |
 

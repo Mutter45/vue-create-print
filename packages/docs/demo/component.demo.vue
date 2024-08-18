@@ -28,7 +28,7 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
     >
       <template #default="{ handlePrint }">
         <div>
-          <button class=" px-2 bg-blue-7 hover:bg-blue-5  text-white rounded mb-2" @click="handlePrint">
+          <button class=" px-2 bg-green-5 hover:bg-green-3 rounded mb-2" @click="handlePrint">
             打 印
           </button>
         </div>
@@ -39,10 +39,10 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
           <img alt="vue-create-print logo" src="/logo.svg" width="200">
           <div>{{ num }}</div>
           <div class="flex">
-            <button class="px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num++">
+            <button class="px-2 bg-green-5 hover:bg-green-3 rounded" @click="num++">
               +
             </button>
-            <button class="ml-2 px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num--">
+            <button class="ml-2 px-2 bg-green-5 hover:bg-green-3 rounded" @click="num--">
               -
             </button>
           </div>
