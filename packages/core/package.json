@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite build --watch",
-    "build": "cross-env NODE_ENV=production vite build",
+    "build": "rimraf dist && cross-env NODE_ENV=production vite build",
     "release": "release-it"
   },
   "peerDependenciesMeta": {

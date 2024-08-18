@@ -7,8 +7,10 @@
   "author": "Mutter45 <mutter45@foxmail.com>",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build:base": "rimraf .\\.vitepress\\dist && vitepress build",
+    "build": "rimraf .\\.vitepress\\dist && vitepress build --base /vue-create-print/",
     "preview": "vitepress preview",
+    "clear": "rimraf .\\.vitepress\\dist",
     "release": "release-it"
   },
   "dependencies": {

@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress'
 import { componentPreview, containerPreview } from '@vitepress-demo-preview/plugin'
-import UnoCSS from 'unocss/vite'
 import sidebar from './config/sidebar'
 import viteConfig from './config/viteConfig'
 
@@ -10,7 +9,6 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/x-icon', href: '/vue-create-print/logo.svg' }],
   ],
-  base: '/vue-create-print/', // 设置站点的基础路径
   locales: {
     root: {
       lang: 'zh-CN',
@@ -52,5 +50,5 @@ export default defineConfig({
       md.use(componentPreview)
     },
   },
-  vite: viteConfig,
+  vite: viteConfig as any,
 })
