@@ -38,12 +38,6 @@
     "build": "cross-env NODE_ENV=production vite build",
     "release": "release-it"
   },
-  "release-it": {
-    "git": false,
-    "npm": {
-      "publish": true
-    }
-  },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
       "optional": true
