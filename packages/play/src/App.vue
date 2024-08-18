@@ -40,7 +40,6 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
       :on-before-print="handleBeforePrint"
       :on-after-print="handleAfterPrint"
       :on-print-error="handlePrintError"
-      :show="true"
       :preserve-after-print="true"
     >
       <template #content>
@@ -52,7 +51,7 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
             width="200"
           >
           <div>{{ b }}</div>
-          <p>ceshi</p>
+          <p>test</p>
           <div>
             <input v-model="radio" type="radio" value="a">
             <input v-model="radio" type="radio" value="b">
@@ -82,7 +81,7 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
   border: 1px solid #ccc;
   padding: 20px;
   h1 {
-    color: red;
+    color: green;
   }
 }
 .btn-group {

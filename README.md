@@ -1,20 +1,24 @@
-# vue-create-print
+<p align="center">
+ <img src="https://raw.githubusercontent.com/Mutter45/vue-create-print/master/public/logo.svg" alt="vue create print for vue2 and vue3" width="300" >
+</p>
 
-Printing functionality supporting Vue 3.x and Vue 2.7.x
+## 功能介绍
 
-## Design Inspiration
+打印功能支持 vue3.x 和 vue2.7.x
 
-First, many thanks to [`react-to-print`](https://github.com/MatthewHerbst/react-to-print). The printing functionality of this project is greatly inspired by its implementation, adjusted to incorporate Vue and related features.
+## 设计来源
 
-Existing printing plugins in the Vue ecosystem were not satisfactory, hence this plugin was developed. It supports both Vue 2 and Vue 3, leveraging [`vue-demi`](https://github.com/vueuse/vue-demi).
+首先感谢 [`react-to-print`](https://github.com/MatthewHerbst/react-to-print) ,本项目的打印功能极大地参考了其实现方式，并结合Vue等相关特性进行了调整。
 
-## Installation
+由于现有Vue生态的打印插件功能都不太理想，所以本插件应运而生， 并依赖 [`vue-demi`](https://github.com/vueuse/vue-demi)实现对Vue2和Vue3的支持！
+
+## 安装
 
 ```bash
 npm install vue-create-print
 ```
 
-## Usage as a Component
+## Component方式使用
 
 ``` ts
 <script setup lang="ts">
@@ -32,7 +36,7 @@ function handleBeforePrint() {
   num.value += 10
   return Promise.resolve()
 }
-function handlePrintError(errorLocation:  'onBeforePrint' | 'print', err: Error) {
+function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) {
   console.error('print error', err, errorLocation)
 }
 </script>
@@ -47,7 +51,7 @@ function handlePrintError(errorLocation:  'onBeforePrint' | 'print', err: Error)
     >
       <template #default="{ handlePrint }">
         <div>
-          <button class=" px-2  bg-blue-7 hover:bg-blue-5  text-white rounded mb-2" @click="handlePrint">
+          <button class=" px-2 bg-green-5 hover:bg-green-3 rounded mb-2" @click="handlePrint">
             打 印
           </button>
         </div>
@@ -55,13 +59,13 @@ function handlePrintError(errorLocation:  'onBeforePrint' | 'print', err: Error)
       <template #content>
         <div class="print-content">
           <h1>打印内容</h1>
-          <img alt="Google logo" src="/logo.svg" width="200">
+          <img alt="vue-create-print logo" src="/logo.svg" width="200">
           <div>{{ num }}</div>
           <div class="flex">
-            <button class="px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num++">
+            <button class="px-2 bg-green-5 hover:bg-green-3 rounded" @click="num++">
               +
             </button>
-            <button class="ml-2 px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num--">
+            <button class="ml-2 px-2 bg-green-5 hover:bg-green-3 rounded" @click="num--">
               -
             </button>
           </div>
@@ -75,7 +79,7 @@ function handlePrintError(errorLocation:  'onBeforePrint' | 'print', err: Error)
   </div>
 </template>
 ```
-## Usage as a Function
+## Function方式使用
 
 ``` ts
 <script setup lang="ts">
@@ -106,19 +110,19 @@ const handlePrint = createPrint({
 <template>
   <div>
     <div>
-      <button class="px-2  bg-blue-7 hover:bg-blue-5  text-white rounded mb-2" @click="handlePrint">
+      <button class="px-2 bg-green-5 hover:bg-green-3 rounded mb-2" @click="handlePrint">
         打 印
       </button>
     </div>
     <div ref="contentRef" class="print-content">
       <h1>打印内容</h1>
-      <img alt="Google logo" src="/logo.svg" width="200">
+      <img alt="vue-create-print logo" src="/logo.svg" width="200">
       <div>{{ num }}</div>
       <div class="flex">
-        <button class="px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num++">
+        <button class="px-2 bg-green-5 hover:bg-green-3 rounded" @click="num++">
           +
         </button>
-        <button class="ml-2 px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num--">
+        <button class="ml-2 px-2 bg-green-5 hover:bg-green-3 rounded" @click="num--">
           -
         </button>
       </div>
