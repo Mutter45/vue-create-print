@@ -36,7 +36,7 @@ function handlePrintError(errorLocation: 'onBeforePrint' | 'print', err: Error) 
       <template #content>
         <div class="print-content">
           <h1>print content</h1>
-          <img alt="Google logo" src="/logo.svg" width="200">
+          <img alt="vue-create-print logo" src="/logo.svg" width="200">
           <div>{{ num }}</div>
           <div class="flex">
             <button class="px-2 bg-blue-7 hover:bg-blue-5  text-white rounded" @click="num++">
