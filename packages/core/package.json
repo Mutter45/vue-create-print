@@ -4,7 +4,7 @@
   "description": "web print for vue2.x and vue3.x",
   "author": "Mutter45 <mutter45@foxmail.com>",
   "license": "ISC",
-  "homepage": "https://github.com/Mutter45/vue-create-print#README",
+  "homepage": "https://github.com/Mutter45/vue-create-print#reademe",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mutter45/vue-create-print.git"
@@ -50,10 +50,10 @@
     }
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
-    "vue-demi": "^0.14.8"
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12"
+    "@types/lodash-es": "^4.17.12",
+    "vue-demi": "^0.14.8"
   }
 }

@@ -5,8 +5,10 @@
     "demi",
     "iframes",
     "iife",
+    "jsdelivr",
     "renderable",
     "tseslint",
+    "unocss",
     "vitepress"
   ],
   // Enable the flat config support

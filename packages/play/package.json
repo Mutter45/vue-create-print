@@ -3,6 +3,8 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
+  "description": "vue-create-print playground",
+  "author": "Mutter45 <mutter45@foxmail.com>",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
